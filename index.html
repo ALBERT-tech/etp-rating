@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Рейтинг ЭТП 44-ФЗ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: sticky weight panel on the left, scanned dashboard on the right; stacks to one column on phones */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --surface-2:#f6f8f7; --ink:#14201e; --ink-2:#4a5855; --muted:#768481; --line:#dbe2e0;
+  --accent:#1d5f6e; --accent-ink:#ffffff; --focus:#2a78d6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --yes:#1baf7a; --no:#b9c3c1;
+  --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101615; --surface:#182120; --surface-2:#1e2827; --ink:#edf2f1; --ink-2:#b3bfbc; --muted:#83918e; --line:#2b3735;
+  --accent:#5fb2c2; --accent-ink:#0c1514; --focus:#3987e5;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --yes:#199e70; --no:#3a4745; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101615; --surface:#182120; --surface-2:#1e2827; --ink:#edf2f1; --ink-2:#b3bfbc; --muted:#83918e; --line:#2b3735;
+  --accent:#5fb2c2; --accent-ink:#0c1514; --focus:#3987e5;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --yes:#199e70; --no:#3a4745; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1360px;margin-inline:auto}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,2.6vw,28px);letter-spacing:-.01em}
+h2{font-size:16px;font-weight:600}
+h3{font-size:13px;font-weight:600}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.sub{color:var(--ink-2);max-width:72ch;margin-top:6px}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+header.top{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.srcs{display:flex;gap:8px;flex-wrap:wrap;min-width:0}
+.srcs .chip{white-space:normal}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+.chip.warn{border-color:color-mix(in oklab,var(--s2) 55%,var(--line));color:var(--ink)}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+aside.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:18px;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:900px){aside.panel{position:static;max-height:none}}
+.ctl{display:flex;flex-direction:column;gap:8px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--surface-2);padding:3px;border-radius:8px;border:1px solid var(--line)}
+.seg button{flex:1 1 auto;font:inherit;font-size:12.5px;border:0;background:transparent;color:var(--ink-2);padding:6px 8px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,.row:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.slider{display:grid;grid-template-columns:minmax(0,1fr) 92px 22px;align-items:center;gap:8px;font-size:12.5px}
+.slider label{color:var(--ink);min-width:0}
+.slider .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:1px}
+.slider output{text-align:right;color:var(--ink-2)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.checks{display:flex;flex-direction:column;gap:5px;font-size:12.5px}
+.checks label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+input[type=checkbox]{accent-color:var(--accent);margin-top:2px}
+.hint{font-size:11.5px;color:var(--muted)}
+hr.sep{border:0;border-top:1px solid var(--line);margin:0}
+
+main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.card-h{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* ranking */
+.rank{display:flex;flex-direction:column;gap:4px}
+.row{display:grid;grid-template-columns:34px minmax(120px,190px) minmax(0,1fr) 64px;gap:12px;align-items:center;padding:8px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.row:hover{background:var(--surface-2)}
+.row[aria-selected="true"]{background:var(--surface-2);border-color:var(--line)}
+.row .pos{font-family:var(--f-display);font-weight:700;font-size:18px;color:var(--ink-2);text-align:center}
+.row .nm{min-width:0}
+.row .nm b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .nm small{color:var(--muted);font-size:11.5px}
+.bar{position:relative;height:18px;background:var(--surface-2);border-radius:4px;display:flex;gap:2px;overflow:hidden}
+.bar span{height:100%;display:block}
+.bar span:last-child{border-radius:0 4px 4px 0}
+.row .sc{font-family:var(--f-mono);font-weight:600;font-size:16px;text-align:right}
+.mv{font-size:11px;font-family:var(--f-mono);margin-left:4px}
+@media (max-width:560px){.row{grid-template-columns:26px minmax(0,1fr) 52px;grid-template-areas:"p n s" "b b b"}.row .pos{grid-area:p}.row .nm{grid-area:n}.row .sc{grid-area:s}.row .bar{grid-area:b}}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:1100px){.grid2{grid-template-columns:minmax(0,1fr)}}
+
+/* profile */
+.prof-h{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.prof-h .big{font-family:var(--f-display);font-size:26px;font-weight:700}
+.gbars{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+.gb{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12.5px}
+.gb .track{position:relative;height:10px;background:var(--surface-2);border-radius:3px}
+.gb .fill{position:absolute;inset:0 auto 0 0;background:var(--s1);border-radius:0 3px 3px 0}
+.gb .avg{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+@media (max-width:520px){.lists{grid-template-columns:minmax(0,1fr)}}
+.lists ul{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink-2)}
+.lists li{margin-bottom:3px}
+.tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tag.plus{color:var(--s3)} .tag.minus{color:var(--s2)}
+
+/* heatmap & tables */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px}
+th,td{padding:7px 8px;text-align:left;vertical-align:middle}
+thead th{font-weight:600;color:var(--ink-2);font-size:11.5px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:1}
+tbody td{border-bottom:1px solid var(--line)}
+td.c,th.c{text-align:center}
+.heat td.h{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;border:2px solid var(--surface);border-radius:6px;min-width:62px}
+.heat th.etp{text-align:center;cursor:pointer;white-space:nowrap}
+.heat th.etp.sel{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.heat tr.blk td{font-weight:600}
+.mx td.v{text-align:center;width:72px}
+.mx th.etp{text-align:center;white-space:nowrap;min-width:72px}
+.mx tbody tr.grp td{background:var(--surface-2);font-weight:600;font-size:12px;color:var(--ink-2);letter-spacing:.02em}
+.mx td.crit{min-width:240px;max-width:420px}
+.mx .flat{color:var(--muted)}
+.cell{display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:5px;font-size:12px;font-weight:600}
+.cell.y{background:color-mix(in oklab,var(--yes) 22%,var(--surface));color:var(--ink)}
+.cell.n{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.cell.d{color:var(--muted);font-weight:500;font-size:10.5px;width:auto;padding:0 4px}
+.cell.p{background:color-mix(in oklab,var(--yes) 10%,var(--surface));color:var(--ink);border:1px dashed color-mix(in oklab,var(--yes) 60%,var(--line))}
+.cell.note::after{content:"*";margin-left:1px;color:var(--s2)}
+.mx col.sel{background:color-mix(in oklab,var(--s1) 7%,transparent)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,input[type=search]{font:inherit;font-size:12.5px;padding:6px 9px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-width:0}
+input[type=search]{width:220px;max-width:100%}
+
+/* compare */
+.cmp-sel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) 64px 64px;gap:0;font-size:12.5px}
+.cmp > div{padding:6px 6px;border-bottom:1px solid var(--line)}
+.cmp .hd{font-weight:600;color:var(--ink-2);font-size:11.5px}
+.cmp .ct{text-align:center}
+.cmp .tot{font-weight:600}
+
+.mk td.best{font-weight:700}
+.dir{font-size:11px;color:var(--muted)}
+.note-box{font-size:12px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:12px}
+.method{font-size:13px;color:var(--ink-2)}
+.method ul{max-width:90ch}
+.method li{margin-bottom:6px}
+.method b{color:var(--ink)}
+
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.4;padding:7px 9px;border-radius:7px;max-width:300px;opacity:0;transition:opacity .08s}
+#tip.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">44-ФЗ · 8 операторов электронных площадок</div>
+      <h1>Рейтинг ЭТП 44-ФЗ</h1>
+      <p class="sub">Сводный балл из трёх блоков: функционал площадки (50 критериев и стоимость БГ из сравнительной таблицы), масштаб на рынке и показатели конкуренции. Веса меняются слева, рейтинг пересчитывается сразу.</p>
+    </div>
+    <div class="srcs">
+      <span class="chip">Матрица функционала · сравнительная таблица от 16.07.2026</span>
+      <span class="chip">Рынок · BI, 01.01.2025–30.09.2026</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="panel" aria-label="Настройки рейтинга">
+      <div class="ctl">
+        <div class="eyebrow">Сценарий</div>
+        <div class="seg" id="presets" role="group" aria-label="Готовые наборы весов">
+          <button type="button" data-p="equal" aria-pressed="true">Равные</button>
+          <button type="button" data-p="customer" aria-pressed="false">Заказчику</button>
+          <button type="button" data-p="supplier" aria-pressed="false">Поставщику</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <div class="eyebrow">Вес блоков</div>
+        <div id="blockSliders" class="ctl"></div>
+      </div>
+      <hr class="sep">
+      <div class="ctl">
+        <div class="eyebrow">Вес групп функционала</div>
+        <div id="groupSliders" class="ctl"></div>
+      </div>
+      <hr class="sep">
+      <div class="ctl">
+        <div class="eyebrow">Ячейки «н/д»</div>
+        <div class="seg" id="ndMode" role="group" aria-label="Как считать н/д">
+          <button type="button" data-v="0" aria-pressed="true">= Нет</button>
+          <button type="button" data-v="half" aria-pressed="false">= ½</button>
+          <button type="button" data-v="skip" aria-pressed="false">Не учитывать</button>
+        </div>
+        <div class="hint">«н/д» значит, что сведений нет. По умолчанию функция не засчитывается, пока не подтверждена.</div>
+      </div>
+      <div class="ctl">
+        <div class="eyebrow">Нет рыночных данных</div>
+        <div class="seg" id="missMode" role="group" aria-label="Площадки без показателей конкуренции">
+          <button type="button" data-v="renorm" aria-pressed="true">Считать по доступным</button>
+          <button type="button" data-v="zero" aria-pressed="false">Ставить 0</button>
+        </div>
+        <div class="hint">У РАД и ЗаказРФ на скриншоте нет показателей конкуренции.</div>
+      </div>
+      <hr class="sep">
+      <div class="ctl">
+        <div class="eyebrow">Показатели конкуренции и качества</div>
+        <div class="checks" id="qChecks"></div>
+      </div>
+    </aside>
+
+    <main>
+      <section class="card" aria-labelledby="h-rank">
+        <div class="card-h">
+          <div><div class="eyebrow">Итог</div><h2 id="h-rank">Сводный рейтинг</h2></div>
+          <div class="legend" id="blockLegend"></div>
+        </div>
+        <div class="rank" id="rank" role="listbox" aria-label="Площадки по сводному баллу"></div>
+        <div class="hint" style="margin-top:10px">Балл 0–100. Длина каждого цвета показывает вклад блока с учётом веса. Стрелка показывает сдвиг места относительно сценария «Равные». Нажмите на строку, чтобы открыть профиль площадки.</div>
+      </section>
+
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-prof">
+          <div class="card-h"><div><div class="eyebrow">Профиль</div><h2 id="h-prof">Площадка</h2></div></div>
+          <div id="profile"></div>
+        </section>
+        <section class="card" aria-labelledby="h-cmp">
+          <div class="card-h"><div><div class="eyebrow">Сравнение</div><h2 id="h-cmp">Одна против другой</h2></div></div>
+          <div class="cmp-sel">
+            <select id="cmpA" aria-label="Первая площадка"></select>
+            <span class="hint">vs</span>
+            <select id="cmpB" aria-label="Вторая площадка"></select>
+          </div>
+          <div id="cmp"></div>
+        </section>
+      </div>
+
+      <section class="card" aria-labelledby="h-heat">
+        <div class="card-h">
+          <div><div class="eyebrow">Разбивка</div><h2 id="h-heat">Баллы по группам и блокам</h2></div>
+          <div class="legend"><span>Доля выполненных критериев: 0%</span><span id="heatScale" style="display:inline-flex;gap:2px"></span><span>100%</span></div>
+        </div>
+        <div class="scroll"><table class="heat" id="heat"></table></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-mx">
+        <div class="card-h">
+          <div><div class="eyebrow">Исходные данные</div><h2 id="h-mx">Матрица функционала</h2></div>
+          <div class="tools">
+            <input type="search" id="q" placeholder="Поиск по критерию" aria-label="Поиск по критерию">
+            <select id="grpFilter" aria-label="Группа"></select>
+            <label class="checks" style="flex-direction:row"><span style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="diffOnly"> Только отличающиеся</span></label>
+          </div>
+        </div>
+        <div class="legend" style="margin-bottom:10px">
+          <span><span class="cell y">✓</span> Да</span><span><span class="cell n">–</span> Нет</span><span><span class="cell p">½</span> Частично</span><span><span class="cell d">н/д</span> нет сведений</span><span><span class="cell y note">✓</span> есть уточнение, наведите</span>
+        </div>
+        <div class="scroll" style="max-height:640px;overflow:auto"><table class="mx" id="mx"></table></div>
+        <div class="note-box" id="tariffNote"></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-mk">
+        <div class="card-h"><div><div class="eyebrow">Рынок</div><h2 id="h-mk">Масштаб и конкуренция</h2></div></div>
+        <div class="scroll"><table class="mk" id="mk"></table></div>
+        <div class="note-box">Источник: BI-дашборды на скриншотах. Масштаб: 4,37 млн процедур на 22,66 трлн ₽ НМЦК за 01.01.2025–30.09.2026. Конкуренция: средние за 2025–2026 по шести площадкам. Коды ЕИС сопоставлены так: ETP_MMVB → Фабрикант (НЭП, АО «ЭТС»), ETP_AVK → ЗаказРФ (АГЗ РТ). Второе сопоставление сделано методом исключения, его стоит проверить. Жирным выделено лучшее значение по показателю.</div>
+      </section>
+
+      <section class="card method" aria-labelledby="h-m">
+        <div class="eyebrow">Методика</div><h2 id="h-m" style="margin-bottom:8px">Как считается балл</h2>
+        <ul>
+          <li><b>Функционал.</b> Да = 1, Нет = 0, «проверка РНП» вместо полной проверки реестров = ½, н/д по переключателю. Балл группы — среднее по её критериям. Стоимость БГ входит в группу «Финансовые сервисы»: самая низкая ставка = 1, самая высокая = 0. Балл блока — взвешенное среднее групп.</li>
+          <li><b>Масштаб.</b> Доля площадки по числу процедур и по НМЦК, каждая делится на долю лидера. Балл — среднее двух отношений.</li>
+          <li><b>Конкуренция и качество.</b> Каждый показатель нормируется min–max по шести площадкам с учётом направления (меньше безрезультатных и обоснованных жалоб — лучше). Разброс в абсолютных числах небольшой (например, 2,45–2,93 заявки), поэтому min–max его усиливает.</li>
+          <li><b>Итог</b> — взвешенное среднее блоков. Тарифы с победителя в балл не входят: после приведения к одной базе НДС они у всех площадок одинаковые.</li>
+          <li>Сноски к стоимости БГ (*, ** …) в исходной таблице не расшифрованы. Значения взяты как «от X %».</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const DATA = {"etps": [{"id": "sber", "name": "Сбербанк-АСТ", "short": "Сбер-АСТ", "url": "www.sberbank-ast.ru", "operator": "АО \"Сбербанк-АСТ\""}, {"id": "rts", "name": "РТС-тендер", "short": "РТС", "url": "www.rts-tender.ru", "operator": "ООО \"РТС - тендер\""}, {"id": "eetp", "name": "Росэлторг (ЕЭТП)", "short": "Росэлторг", "url": "www.roseltorg.ru", "operator": "АО «ЕЭТП»"}, {"id": "gpb", "name": "ЭТП ГПБ", "short": "ГПБ", "url": "https://etpgpb.ru/", "operator": "АО \"ГАЗПРОМБАНК\""}, {"id": "nep", "name": "Фабрикант (НЭП)", "short": "Фабрикант", "url": "https://www.fabrikant.ru/", "operator": "АО \"ЭТС\""}, {"id": "rad", "name": "РАД", "short": "РАД", "url": "https://lot-online.ru", "operator": "АО «Российский аукционный дом»"}, {"id": "tek", "name": "ТЭК-Торг", "short": "ТЭК-Торг", "url": "www.tektorg.ru", "operator": "АО «ТЭК-Торг»"}, {"id": "agz", "name": "ЗаказРФ (АГЗ РТ)", "short": "ЗаказРФ", "url": "www.etp.zakazrf.ru", "operator": "АО \"АГЕНТСТВО ПО ГОСУДАРСТВЕННОМУ ЗАКАЗУ РЕСПУБЛИКИ ТАТАРСТАН\""}], "criteria": [{"row": 8, "group": "participants", "name": "Автоматическая проверка о наличии сведений о поставщике в РНП", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 9, "group": "digital", "name": "Автоматизированное хранилище документов в личном кабинете на площадке", "v": [1, 1, 0, 0, 0, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 10, "group": "search", "name": "Многокритериальный поиск", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 11, "group": "search", "name": "Автоматическое приглашение участников на торги", "v": [1, 1, null, 0, null, null, null, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 12, "group": "search", "name": "Уведомление о ходе торгов", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 13, "group": "search", "name": "Календарь событий", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 14, "group": "search", "name": "Подписка на интересующие закупки (по предмету, отрасли, организатору)", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 15, "group": "participants", "name": "Сервис приглашения поставщиков, интеллектуальный подбор участников на закупку", "v": [1, 1, 1, 1, 0, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 16, "group": "customer", "name": "Сервис \"ЭкономЭксперт\"", "v": [0, 1, 1, 0, 1, 1, 1, 0], "n": [null, "Да (открывается при размещении процедур)", "Да (дополнительный сервис)", null, "Да (встроен как основные сервисы)", "Да (встроен как основные сервисы)", "Да (встроен как основные сервисы), выдаётся доступ только по запросу у менеджера ЭТП", null]}, {"row": 17, "group": "customer", "name": "Pirson tech", "v": [0, 0, 0, 1, 0, 0, 0, 0], "n": [null, null, null, "Да (встроен как основные сервисы)", null, null, null, null]}, {"row": 18, "group": "customer", "name": "Сервис обоснования НМЦ. Товары", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 19, "group": "customer", "name": "Сервис обоснования НМЦ.Медикаменты", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 20, "group": "customer", "name": "Сервис обоснования НМЦ.Охранные услуги", "v": [1, 1, 1, 1, 1, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 21, "group": "customer", "name": "Сервис обоснования НМЦ. На топливо моторное в соответствии с Приказом ФАС России № 894/24", "v": [0, 0, 1, 0, 1, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 22, "group": "customer", "name": "Сервис проверки ГОСТ, СНиП, СанПиН, РД, СП", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 23, "group": "customer", "name": "Сервис проверки кодов ОКПД 2", "v": [1, 1, 1, 1, 1, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 24, "group": "customer", "name": "Сервис по проверке РУ", "v": [1, 1, 0, 0, 0, 1, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 25, "group": "customer", "name": "Сервис \"Поиск решений ФАС\"", "v": [0, 0, 1, 0, 1, 1, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 26, "group": "customer", "name": "Расчёт сроков процедур", "v": [1, 1, 1, 1, 1, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 27, "group": "participants", "name": "Сервис проверки контрагента. Получение дополнительной информации по участнику (бухгалтерская отчетность, сведения об учредителях и др.)", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 28, "group": "digital", "name": "Виртуальный ассистент для поставщиков", "v": [1, 1, 1, 0, 0, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 29, "group": "digital", "name": "Виртуальный ассистент для заказчиков", "v": [1, 1, 0, 0, 0, 1, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 30, "group": "participants", "name": "Возможность проверки участников в реестрах СРО, МСП, РБГ", "v": [1, 1, 1, null, null, 1, null, 0.5], "n": [null, null, null, null, null, null, null, "проверка РНП"]}, {"row": 31, "group": "customer", "name": "Настраиваемые формы протоколов для заказчиков", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 32, "group": "customer", "name": "Отчеты по форме заказчика", "v": [1, 1, 1, null, 1, null, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 33, "group": "participants", "name": "Сведения о жалобах и результатах контроля", "v": [1, 1, 1, null, null, 1, null, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 34, "group": "customer", "name": "Сервис заключения дополнительных соглашений", "v": [1, 1, 1, null, 1, null, 1, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 35, "group": "support", "name": "Представительства оператора электронной площадки в регионах", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 36, "group": "support", "name": "Персональный менеджер", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 37, "group": "support", "name": "Наличие собственного учебного центра", "v": [1, 1, 1, 1, 0, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 38, "group": "support", "name": "Наличие собственной Кафедры при ВУЗе по профессиональной переподготовке и повышению квалификации", "v": [1, 0, 0, 0, 0, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 39, "group": "infra", "name": "Собственный удостоверяющий центр (выпуск электронной подписи)", "v": [1, 1, 1, 1, 0, 1, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 40, "group": "digital", "name": "Электронный документооборот", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 41, "group": "support", "name": "Юридическое сопровождение", "v": [1, 1, 1, 1, 0, 0, 1, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 42, "group": "infra", "name": "Наличие аттестата соответствия требованиям информационной безопасности", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 43, "group": "infra", "name": "Взаимодействие с информационной системой \"Независимый регистратор\"", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 44, "group": "customer", "name": "Персональные настройки личного кабинета для организаторов торгов (настройка по ограничению доступа к заявкам со стороны заказчика, точечная настройка уведомлений, возможность ограничения доступа к заявкам внутри организатора торгов, автоматизация заполнения полей при работе с закупками, тонкой настройка наиболее важных уведомлений для организаторов торгов)", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": ["Да (кол-во возможных настроек на равне с РТС)", "Да (кол-во возможных настроек на равне со Сбер А)", null, null, null, null, null, null]}, {"row": 45, "group": "finance", "name": "Специальные счета для участников, банковский продукт", "v": [1, 1, 1, 1, 0, 0, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 46, "group": "finance", "name": "Банковская гарантия для участников он-лайн", "v": [1, 1, 1, 1, 0, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 47, "group": "digital", "name": "Bi-Аналитика", "v": [1, 1, 1, 0, 1, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 48, "group": "digital", "name": "Магазин малых закупок", "v": [1, 1, 1, null, 1, null, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 49, "group": "digital", "name": "История посещений", "v": [1, null, 0, null, null, null, null, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 50, "group": "digital", "name": "Журнал интеграции с ЕИС", "v": [1, 0, 0, 0, 0, 0, 0, 0], "n": [null, null, null, null, null, null, null, null]}, {"row": 52, "group": "other", "name": "Торги по аренде и приватизации государственного и муниципального имущества в соответствие с Постановлением Правительства № 860", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 53, "group": "other", "name": "Торги по продаже имущества (предприятия) должников-банкротов в соответствии со 127-ФЗ", "v": [1, null, null, null, 1, 1, null, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 54, "group": "other", "name": "Закупки по 223-ФЗ", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 55, "group": "other", "name": "Коммерческие торги", "v": [1, 1, 1, 1, 1, 1, 1, 1], "n": [null, null, null, null, null, null, null, null]}, {"row": 56, "group": "other", "name": "Торги по передаче права на лицензию на оказание услуг связи", "v": [1, null, null, null, null, null, null, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 58, "group": "finance", "name": "Наличие автоматизированного сервиса получения БГ", "v": [1, 1, 1, 1, 0, 0, 1, null], "n": [null, null, null, null, null, null, null, null]}, {"row": 59, "group": "finance", "name": "Подача запроса из ЛК на площадке на получение БГ", "v": [1, 1, 1, null, 0, 0, null, null], "n": [null, null, null, null, null, null, null, null]}], "bg": {"raw": ["от 2,9%", "от 3,53%**", "от 2,5%***", "от 2,5%****", "от 4%", "н/д", "от 2,5%*****", "от 4%*"], "num": [2.9, 3.53, 2.5, 2.5, 4.0, null, 2.5, 4.0]}, "tariffs": [{"name": "Тарифы ЭТП для закупок только для СМП и СОНКО", "v": ["1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС", "1% от НМЦК, но не более 2000 рублей с НДС"]}, {"name": "Тариф с победителя закупок на общих основаниях для участников из числа самозанятых и СМСП", "v": ["1% от НМЦ/МЦ контракта, но не более 5 000 руб. (без НДС)", "1% от НМЦ , но не более 5 000 руб (без НДС)", "1% от НМЦК, но не более 5 000 руб. (без НДС)", "1% от НМЦК, но не более 5 000 руб. (без НДС)", "1% от НМЦ , но не более 5 000 руб (без НДС)", "1% от НМЦ, но не более 6 000 рублей (в т.ч. 20 % НДС)", "1% от НМЦ/МЦ контракта, но не более 5 000 руб. (без НДС)", "1% от НМЦК, но не более 5 000 руб. (без НДС)"]}, {"name": "Тариф с победителя закупок на общих основаниях для остальных участников", "v": ["1% от НМЦ/МЦ контракта, но не более 7 500 руб. (без НДС)", "1% от НМЦ/МЦ контракта, но не более 7 500 руб. (без НДС)", "1% от НМЦК контракта, но не более 7 500 руб. (без НДС)", "1 % от НМЦ, но не более 7 500 руб. (без НДС)", "1 % от НМЦ, но не более 7 500 руб. (без НДС)", "1% от НМЦ, но не более 9 000 рублей (в т.ч. 20 % НДС)", "1% от НМЦ/МЦ контракта, но не более 7 500 руб. (без НДС)", "1% от НМЦК контракта, но не более 7 500 руб. (без НДС)"]}]};
+const MARKET = {
+  scale:{ rts:[1667969,7414113777713.92], sber:[891827,3899010574222.84], eetp:[801768,5151033978260.00], nep:[339879,2467770905483.76],
+          tek:[211041,514731016055.67], gpb:[204940,1348220136579.16], agz:[157678,1202835303793.87], rad:[95613,657969699686.23] },
+  totals:[4370715,22655685391795.45],
+  quality:[
+    {id:'bids',  name:'Среднее число заявок на процедуру', unit:'', dir:1,  v:{sber:2.93,gpb:2.90,tek:2.85,nep:2.76,rts:2.58,eetp:2.45}},
+    {id:'comp',  name:'Доля закупок с ≥2 участниками', unit:'%', dir:1,  v:{sber:57.9,nep:56.4,gpb:55.5,tek:51.9,eetp:48.0,rts:47.3}},
+    {id:'fail',  name:'Доля безрезультатных закупок', unit:'%', dir:-1, v:{rts:4.0,eetp:4.2,sber:4.7,nep:5.0,tek:5.1,gpb:6.2}},
+    {id:'compl', name:'Доля обоснованных жалоб', unit:'%', dir:-1, v:{tek:22.7,eetp:26.3,gpb:27.8,rts:31.8,nep:32.2,sber:38.6}},
+    {id:'clean', name:'Доля процедур без жалоб', unit:'%', dir:1,  v:{rts:98.1,sber:97.7,gpb:97.5,tek:97.3,nep:95.4,eetp:90.6}},
+    {id:'econ',  name:'Экономия бюджетных средств', unit:'%', dir:1,  v:{sber:9.8,tek:8.3,rts:8.2,eetp:6.3,gpb:6.0,nep:5.4}}
+  ]
+};
+const GROUPS = [
+  {id:'search',name:'Поиск и уведомления'},
+  {id:'participants',name:'Работа с участниками'},
+  {id:'customer',name:'Сервисы для заказчика'},
+  {id:'digital',name:'Цифровые сервисы и ИИ'},
+  {id:'support',name:'Поддержка и обучение'},
+  {id:'infra',name:'Инфраструктура и ИБ'},
+  {id:'finance',name:'Финансовые сервисы и БГ'},
+  {id:'other',name:'Опыт в иных сферах'}
+];
+const BLOCKS = [
+  {id:'func', name:'Функционал', color:'var(--s1)'},
+  {id:'scale',name:'Масштаб', color:'var(--s2)'},
+  {id:'qual', name:'Конкуренция и качество', color:'var(--s3)'}
+];
+const PRESETS = {
+  equal:   {blocks:{func:1,scale:1,qual:1}, groups:{search:1,participants:1,customer:1,digital:1,support:1,infra:1,finance:1,other:1}},
+  customer:{blocks:{func:3,scale:1,qual:2}, groups:{search:1,participants:2,customer:3,digital:2,support:2,infra:1,finance:0,other:1}},
+  supplier:{blocks:{func:2,scale:3,qual:2}, groups:{search:3,participants:1,customer:0,digital:2,support:2,infra:2,finance:3,other:1}}
+};
+const E = DATA.etps, N = E.length;
+const idx = Object.fromEntries(E.map((e,i)=>[e.id,i]));
+const st = { preset:'equal', blocks:{...PRESETS.equal.blocks}, groups:{...PRESETS.equal.groups}, nd:'0', miss:'renorm',
+  q:Object.fromEntries(MARKET.quality.map(m=>[m.id,true])), sel:'sber', cmpA:'sber', cmpB:'rts', search:'', grp:'all', diff:false };
+
+const fmt = (x,d=0)=> x==null?'—':x.toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// BG cost as pseudo-criterion inside finance
+const bgNum = DATA.bg.num; const bgVals = bgNum.filter(x=>x!=null);
+const bgMin = Math.min(...bgVals), bgMax = Math.max(...bgVals);
+const bgScore = bgNum.map(x=> x==null?null:(bgMax-x)/(bgMax-bgMin));
+
+function cellVal(v, nd){ if(v!=null) return v; if(nd==='0') return 0; if(nd==='half') return .5; return null; }
+
+function compute(s){
+  // group scores
+  const g = {};
+  for(const G of GROUPS){
+    g[G.id] = E.map((_,i)=>{
+      const crit = DATA.criteria.filter(c=>c.group===G.id);
+      let vals = crit.map(c=>cellVal(c.v[i], s.nd));
+      if(G.id==='finance') vals.push(cellVal(bgScore[i], s.nd));
+      vals = vals.filter(v=>v!=null);
+      return vals.length? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+    });
+  }
+  const gw = GROUPS.reduce((a,G)=>a+s.groups[G.id],0);
+  const func = E.map((_,i)=> gw? GROUPS.reduce((a,G)=>a+s.groups[G.id]*g[G.id][i],0)/gw*100 : 0);
+  const lead = [Math.max(...Object.values(MARKET.scale).map(v=>v[0])), Math.max(...Object.values(MARKET.scale).map(v=>v[1]))];
+  const scale = E.map(e=>{const v=MARKET.scale[e.id]; return v? (v[0]/lead[0]+v[1]/lead[1])/2*100 : null;});
+  const qm = MARKET.quality.filter(m=>s.q[m.id]);
+  const qNorm = {};
+  for(const m of MARKET.quality){
+    const xs = Object.values(m.v), lo=Math.min(...xs), hi=Math.max(...xs);
+    qNorm[m.id] = E.map(e=>{const x=m.v[e.id]; if(x==null) return null; const t=(x-lo)/(hi-lo); return (m.dir>0?t:1-t)*100;});
+  }
+  const qual = E.map((e,i)=>{ if(!qm.length) return null; const xs=qm.map(m=>qNorm[m.id][i]); if(xs.some(x=>x==null)) return null; return xs.reduce((a,b)=>a+b,0)/xs.length; });
+  const blocks = {func,scale,qual};
+  const W = s.blocks;
+  const total=[], contrib=[], partial=[];
+  E.forEach((e,i)=>{
+    let den=0, num=0; const c={}; let miss=false;
+    for(const B of BLOCKS){
+      if(!W[B.id]) continue;
+      if(B.id==='qual' && !qm.length) continue;
+      let v = blocks[B.id][i];
+      if(v==null){ miss=true; if(s.miss==='renorm') continue; v=0; }
+      den+=W[B.id]; num+=W[B.id]*v; c[B.id]=W[B.id]*v;
+    }
+    total[i]= den? num/den : 0;
+    for(const k in c) c[k]= den? c[k]/den : 0;
+    contrib[i]=c; partial[i]=miss;
+  });
+  const order = E.map((_,i)=>i).sort((a,b)=>total[b]-total[a]);
+  return {g,blocks,total,contrib,partial,order,qNorm};
+}
+const baseRank = (()=>{ const r=compute({...st, blocks:{...PRESETS.equal.blocks}, groups:{...PRESETS.equal.groups}}); const p={}; r.order.forEach((i,k)=>p[i]=k); return p; })();
+
+// ---------- controls
+function sliderHTML(id,label,val,color){
+  return `<div class="slider"><label for="${id}">${color?`<span class="sw" style="background:${color}"></span>`:''}${esc(label)}</label><input type="range" id="${id}" min="0" max="5" step="1" value="${val}"><output for="${id}" class="num">${val}</output></div>`;
+}
+function buildControls(){
+  $('#blockSliders').innerHTML = BLOCKS.map(B=>sliderHTML('wb-'+B.id,B.name,st.blocks[B.id],B.color)).join('');
+  $('#groupSliders').innerHTML = GROUPS.map(G=>sliderHTML('wg-'+G.id,G.name,st.groups[G.id])).join('');
+  $('#qChecks').innerHTML = MARKET.quality.map(m=>`<label><input type="checkbox" id="q-${m.id}" ${st.q[m.id]?'checked':''}><span>${esc(m.name)} <span class="dir">${m.dir>0?'↑ больше — лучше':'↓ меньше — лучше'}</span></span></label>`).join('');
+  $('#blockLegend').innerHTML = BLOCKS.map(B=>`<span><i style="background:${B.color}"></i>${B.name}</span>`).join('');
+}
+function syncSliders(){
+  BLOCKS.forEach(B=>{const el=$('#wb-'+B.id); el.value=st.blocks[B.id]; el.nextElementSibling.value=st.blocks[B.id];});
+  GROUPS.forEach(G=>{const el=$('#wg-'+G.id); el.value=st.groups[G.id]; el.nextElementSibling.value=st.groups[G.id];});
+}
+function setPressed(container, attr, val){ container.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset[attr]===val))); }
+
+document.addEventListener('input', e=>{
+  const t=e.target; if(t.type!=='range') return;
+  const [k,id]=t.id.split('-'); const v=+t.value; t.nextElementSibling.value=v;
+  if(k==='wb') st.blocks[id]=v; else st.groups[id]=v;
+  st.preset=null; setPressed($('#presets'),'p','__'); render();
+});
+document.addEventListener('change', e=>{
+  const t=e.target;
+  if(t.id && t.id.startsWith('q-')){ st.q[t.id.slice(2)]=t.checked; render(); }
+});
+$('#presets').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; const p=PRESETS[b.dataset.p];
+  st.preset=b.dataset.p; st.blocks={...p.blocks}; st.groups={...p.groups}; setPressed($('#presets'),'p',b.dataset.p); syncSliders(); render(); });
+$('#ndMode').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st.nd=b.dataset.v; setPressed($('#ndMode'),'v',st.nd); render(); });
+$('#missMode').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st.miss=b.dataset.v; setPressed($('#missMode'),'v',st.miss); render(); });
+
+// ---------- render
+let R;
+function render(){
+  R = compute(st);
+  renderRank(); renderProfile(); renderHeat(); renderCompare(); renderMarket();
+}
+function renderRank(){
+  const el=$('#rank');
+  el.innerHTML = R.order.map((i,k)=>{
+    const e=E[i], c=R.contrib[i];
+    const segs = BLOCKS.filter(B=>c[B.id]>0).map(B=>`<span style="width:${c[B.id]}%;background:${B.color}" data-tip="${esc(B.name)}: вклад ${fmt(c[B.id],1)} из ${fmt(R.total[i],1)}"></span>`).join('');
+    const d = baseRank[i]-k;
+    const mv = d? `<span class="mv" style="color:var(--ink-2)" title="Сдвиг относительно сценария «Равные»">${d>0?'▲':'▼'}${Math.abs(d)}</span>`:'';
+    const yes = DATA.criteria.filter(cr=>cr.v[i]===1).length;
+    return `<div class="row" role="option" tabindex="0" data-i="${i}" aria-selected="${e.id===st.sel}">
+      <div class="pos">${k+1}</div>
+      <div class="nm"><b>${esc(e.name)}</b><small>Да по ${yes} из ${DATA.criteria.length} критериев</small>${R.partial[i]?` <span class="chip warn" style="font-size:10.5px;padding:1px 6px" data-tip="Нет показателей конкуренции. ${st.miss==='renorm'?'Балл посчитан по доступным блокам.':'Блок засчитан как 0.'}">неполные данные</span>`:''}</div>
+      <div class="bar" role="img" aria-label="Балл ${fmt(R.total[i],1)}">${segs}</div>
+      <div class="sc">${fmt(R.total[i],1)}${mv}</div></div>`;
+  }).join('');
+}
+$('#rank').addEventListener('click', e=>{ const r=e.target.closest('.row'); if(!r) return; st.sel=E[+r.dataset.i].id; render(); });
+$('#rank').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ const r=e.target.closest('.row'); if(r){ e.preventDefault(); st.sel=E[+r.dataset.i].id; render(); $(`#rank .row[data-i="${r.dataset.i}"]`).focus(); } } });
+
+function renderProfile(){
+  const i=idx[st.sel], e=E[i];
+  const place = R.order.indexOf(i)+1;
+  const avg = id=> R.g[id].reduce((a,b)=>a+b,0)/N;
+  const bars = GROUPS.map(G=>{
+    const v=R.g[G.id][i]*100, a=avg(G.id)*100;
+    return `<div class="gb"><span>${esc(G.name)}</span><div class="track" data-tip="${esc(G.name)}: ${fmt(v)}% · среднее по 8 ЭТП ${fmt(a)}%"><div class="fill" style="width:${v}%"></div><div class="avg" style="left:calc(${a}% - 1px)"></div></div><span class="num" style="text-align:right">${fmt(v)}</span></div>`;
+  }).join('');
+  const others = j=> E.map((_,k)=>k).filter(k=>k!==j);
+  const plus = DATA.criteria.filter(c=>c.v[i]===1 && others(i).filter(k=>c.v[k]===1).length<=2)
+    .map(c=>{const n=others(i).filter(k=>c.v[k]===1).length; return `<li>${esc(c.name)}${n===0?' <b style="color:var(--ink)">(только здесь)</b>':''}</li>`;});
+  const minus = DATA.criteria.filter(c=>c.v[i]!==1 && others(i).filter(k=>c.v[k]===1).length>=4)
+    .map(c=>`<li>${esc(c.name)} <span class="hint">(${c.v[i]==null?'н/д':c.v[i]===0?'нет':'частично'}; есть у ${others(i).filter(k=>c.v[k]===1).length} из 7)</span></li>`);
+  const sc=MARKET.scale[e.id];
+  $('#profile').innerHTML = `
+    <div class="prof-h"><span class="big num">${fmt(R.total[i],1)}</span><span class="chip">${place} место из ${N}</span><span class="hint">${esc(e.operator)} · ${esc(e.url.replace(/^https?:\/\//,'').replace(/\/$/,''))}</span></div>
+    <div class="hint" style="margin-top:8px">Функционал ${fmt(R.blocks.func[i],1)} · Масштаб ${fmt(R.blocks.scale[i],1)} · Конкуренция ${R.blocks.qual[i]==null?'нет данных':fmt(R.blocks.qual[i],1)}${sc?` · ${fmt(sc[0]/MARKET.totals[0]*100,1)}% процедур, ${fmt(sc[1]/MARKET.totals[1]*100,1)}% НМЦК`:''}</div>
+    <div class="gbars">${bars}</div>
+    <div class="hint" style="margin-top:6px">Полоса — доля выполненных критериев группы, вертикальная черта — среднее по восьми площадкам.</div>
+    <div class="lists">
+      <div><span class="tag plus">Редкие преимущества</span><ul>${plus.join('')||'<li>Нет функций, которые есть максимум у двух других площадок</li>'}</ul></div>
+      <div><span class="tag minus">Пробелы</span><ul>${minus.join('')||'<li>Нет функций, которые есть у большинства, но отсутствуют здесь</li>'}</ul></div>
+    </div>`;
+}
+
+function heatColor(p){ return `color-mix(in oklab, var(--s1) ${Math.round(8+p*0.82)}%, var(--surface))`; }
+function heatInk(p){ return p>58? '#ffffff' : 'var(--ink)'; }
+function renderHeat(){
+  const cols = R.order;
+  let h = `<thead><tr><th>Группа / блок</th>${cols.map(i=>`<th class="etp${E[i].id===st.sel?' sel':''}" data-i="${i}">${esc(E[i].short)}</th>`).join('')}</tr></thead><tbody>`;
+  for(const G of GROUPS){
+    h += `<tr><td>${esc(G.name)} <span class="hint">×${st.groups[G.id]}</span></td>${cols.map(i=>{const p=R.g[G.id][i]*100; return `<td class="h" style="background:${heatColor(p)};color:${heatInk(p)}" data-tip="${esc(E[i].short)} · ${esc(G.name)}: ${fmt(p)}%">${fmt(p)}</td>`;}).join('')}</tr>`;
+  }
+  for(const B of BLOCKS){
+    h += `<tr class="blk"><td><span class="sw" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${B.color};margin-right:6px"></span>${esc(B.name)} <span class="hint">×${st.blocks[B.id]}</span></td>${cols.map(i=>{const p=R.blocks[B.id][i]; return p==null?`<td class="h" style="color:var(--muted)" data-tip="Нет данных">—</td>`:`<td class="h" style="background:${heatColor(p)};color:${heatInk(p)}" data-tip="${esc(E[i].short)} · ${esc(B.name)}: ${fmt(p,1)}">${fmt(p)}</td>`;}).join('')}</tr>`;
+  }
+  h += `<tr class="blk"><td>Итог</td>${cols.map(i=>`<td class="h num" style="font-weight:700">${fmt(R.total[i],1)}</td>`).join('')}</tr></tbody>`;
+  $('#heat').innerHTML = h;
+  $('#heatScale').innerHTML = [0,20,40,60,80,100].map(p=>`<i style="width:14px;height:10px;border-radius:2px;display:inline-block;background:${heatColor(p)};border:1px solid var(--line)"></i>`).join('');
+}
+$('#heat').addEventListener('click', e=>{ const th=e.target.closest('th.etp'); if(!th) return; st.sel=E[+th.dataset.i].id; render(); });
+
+// matrix (static order of source; depends on filters only)
+function cellHTML(v,note){
+  const t = note? ` data-tip="${esc(note)}"`:'';
+  if(v===1) return `<span class="cell y${note?' note':''}"${t}>✓</span>`;
+  if(v===0) return `<span class="cell n">–</span>`;
+  if(v==null) return `<span class="cell d">н/д</span>`;
+  return `<span class="cell p note"${t}>½</span>`;
+}
+function renderMatrix(){
+  const q = st.search.trim().toLowerCase();
+  let h = `<colgroup><col>${E.map(e=>`<col${e.id===st.sel?' class="sel"':''}>`).join('')}</colgroup><thead><tr><th>Критерий</th>${E.map(e=>`<th class="etp">${esc(e.short)}</th>`).join('')}</tr></thead><tbody>`;
+  let shown=0;
+  for(const G of GROUPS){
+    if(st.grp!=='all' && st.grp!==G.id) continue;
+    let rows = DATA.criteria.filter(c=>c.group===G.id);
+    rows = rows.map(c=>({...c, flat: new Set(c.v.map(String)).size===1}));
+    if(st.diff) rows = rows.filter(c=>!c.flat);
+    if(q) rows = rows.filter(c=>c.name.toLowerCase().includes(q));
+    const showBG = G.id==='finance' && (!q || 'стоимость бг банковская гарантия'.includes(q));
+    if(!rows.length && !showBG) continue;
+    h += `<tr class="grp"><td colspan="${N+1}">${esc(G.name)}</td></tr>`;
+    for(const c of rows){ shown++;
+      h += `<tr><td class="crit${c.flat?' flat':''}">${esc(c.name)}${c.flat?' <span class="hint">· одинаково у всех</span>':''}</td>${c.v.map((v,i)=>`<td class="v">${cellHTML(v,c.n[i])}</td>`).join('')}</tr>`;
+    }
+    if(showBG){ shown++;
+      h += `<tr><td class="crit">Стоимость банковской гарантии, % годовых <span class="hint">· ниже — лучше</span></td>${DATA.bg.raw.map((r,i)=>`<td class="v num" style="font-size:11.5px${bgNum[i]===bgMin?';font-weight:700':''}">${esc(r)}</td>`).join('')}</tr>`;
+    }
+  }
+  if(!shown) h += `<tr><td colspan="${N+1}" class="hint">Ничего не найдено. Измените запрос или группу.</td></tr>`;
+  $('#mx').innerHTML = h + '</tbody>';
+}
+$('#grpFilter').innerHTML = `<option value="all">Все группы</option>` + GROUPS.map(G=>`<option value="${G.id}">${esc(G.name)}</option>`).join('');
+$('#grpFilter').addEventListener('change', e=>{ st.grp=e.target.value; renderMatrix(); });
+$('#q').addEventListener('input', e=>{ st.search=e.target.value; renderMatrix(); });
+$('#diffOnly').addEventListener('change', e=>{ st.diff=e.target.checked; renderMatrix(); });
+
+function renderCompare(){
+  const a=idx[st.cmpA], b=idx[st.cmpB];
+  const diff = DATA.criteria.filter(c=>c.v[a]!==c.v[b]);
+  const lbl = v=> v===1?'<span class="cell y">✓</span>':v===0?'<span class="cell n">–</span>':v==null?'<span class="cell d">н/д</span>':'<span class="cell p">½</span>';
+  let h = `<div class="cmp"><div class="hd">Итоговый балл</div><div class="hd ct">${esc(E[a].short)}</div><div class="hd ct">${esc(E[b].short)}</div>
+    <div class="tot">Сводный</div><div class="ct num tot">${fmt(R.total[a],1)}</div><div class="ct num tot">${fmt(R.total[b],1)}</div>`;
+  for(const B of BLOCKS){ const x=R.blocks[B.id][a], y=R.blocks[B.id][b]; h+=`<div>${B.name}</div><div class="ct num">${x==null?'—':fmt(x)}</div><div class="ct num">${y==null?'—':fmt(y)}</div>`; }
+  h += `<div class="hd" style="padding-top:14px">Где различаются (${diff.length})</div><div></div><div></div>`;
+  h += diff.map(c=>`<div>${esc(c.name)}</div><div class="ct">${lbl(c.v[a])}</div><div class="ct">${lbl(c.v[b])}</div>`).join('') || `<div class="hint">По функционалу различий нет</div><div></div><div></div>`;
+  if(bgNum[a]!==bgNum[b]) h+=`<div>Стоимость БГ</div><div class="ct num" style="font-size:11.5px">${esc(DATA.bg.raw[a])}</div><div class="ct num" style="font-size:11.5px">${esc(DATA.bg.raw[b])}</div>`;
+  $('#cmp').innerHTML = h + '</div>';
+}
+['cmpA','cmpB'].forEach(k=>{ const el=$('#'+k); el.innerHTML=E.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join(''); el.value=st[k];
+  el.addEventListener('change', ev=>{ st[k]=ev.target.value; renderCompare(); }); });
+
+function renderMarket(){
+  const cols = R.order;
+  let h = `<thead><tr><th>Показатель</th>${cols.map(i=>`<th class="c">${esc(E[i].short)}</th>`).join('')}</tr></thead><tbody>`;
+  const sh = j=>{ const vals = cols.map(i=>{const v=MARKET.scale[E[i].id]; return v? v[j]/MARKET.totals[j]*100 : null;}); const mx=Math.max(...vals.filter(x=>x!=null));
+    return vals.map(v=>`<td class="c num${v===mx?' best':''}">${v==null?'—':fmt(v,1)+'%'}</td>`).join(''); };
+  h += `<tr><td>Доля по числу процедур <div class="dir">↑ масштаб</div></td>${sh(0)}</tr>`;
+  h += `<tr><td>Доля по НМЦК <div class="dir">↑ масштаб</div></td>${sh(1)}</tr>`;
+  h += `<tr><td>Процедур, тыс. <div class="dir">01.01.2025–30.09.2026</div></td>${cols.map(i=>{const v=MARKET.scale[E[i].id]; return `<td class="c num">${v?fmt(v[0]/1000,1):'—'}</td>`;}).join('')}</tr>`;
+  for(const m of MARKET.quality){
+    const xs=Object.values(m.v); const best = m.dir>0?Math.max(...xs):Math.min(...xs);
+    h += `<tr style="${st.q[m.id]?'':'opacity:.5'}"><td>${esc(m.name)}${m.unit?', %':''} <div class="dir">${m.dir>0?'↑ больше — лучше':'↓ меньше — лучше'}${st.q[m.id]?'':' · не учитывается'}</div></td>${cols.map(i=>{const v=m.v[E[i].id]; return `<td class="c num${v===best?' best':''}">${v==null?'—':fmt(v,m.unit?1:2)}</td>`;}).join('')}</tr>`;
+  }
+  $('#mk').innerHTML = h + '</tbody>';
+}
+
+// tariffs note
+(function(){
+  const t = DATA.tariffs;
+  $('#tariffNote').innerHTML = `<b>Тарифы</b> в балл не входят. Для СМП и СОНКО везде 1% от НМЦК, не более 2 000 ₽ с НДС. С победителя: 1%, не более 5 000 ₽ (СМСП и самозанятые) и 7 500 ₽ (остальные) без НДС. РАД указывает 6 000 и 9 000 ₽ с НДС 20%, это те же 5 000 и 7 500 ₽ без НДС.`;
+})();
+
+// tooltip
+const tip=$('#tip');
+document.addEventListener('pointerover', e=>{ const t=e.target.closest('[data-tip]'); if(!t){ tip.classList.remove('on'); return; } tip.textContent=t.dataset.tip; tip.classList.add('on'); });
+document.addEventListener('pointermove', e=>{ if(!tip.classList.contains('on')) return; const w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=e.clientX+14, y=e.clientY+14; if(x+w>innerWidth-8) x=e.clientX-w-14; if(y+h>innerHeight-8) y=e.clientY-h-14; tip.style.left=x+'px'; tip.style.top=y+'px'; });
+document.addEventListener('pointerout', e=>{ if(!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest('[data-tip]')) tip.classList.remove('on'); });
+
+buildControls();
+const _render = render;
+render = function(){ _render(); renderMatrix(); };
+render();
+</script>
+
+</body>
+</html>
